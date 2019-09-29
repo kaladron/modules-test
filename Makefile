@@ -1,8 +1,11 @@
+CXXFLAGS := -std=c++2a -stdlib=libc++ -fmodules
+
 all:
-	clang++-9 -std=c++2a -stdlib=libc++ -fmodules --precompile a.cppm -o a.pcm
-	clang++-9 -std=c++2a -stdlib=libc++ -fmodules -fmodule-file=a.pcm -c foo.cpp -o foo.o                             
-	clang++-9 -std=c++2a -c a.pcm -o a.o                             
-	clang++-9 -std=c++2a -stdlib=libc++ -fmodules -fmodule-file=a.pcm a.o foo.o main.cc -o test 
+	$(CXX) $(CXXFLAGS) --precompile a.cppm -o a.pcm
+	$(CXX) $(CXXFLAGS) -fmodule-file=a.pcm -c foo.cpp -o foo.o                             
+	$(CXX) $(CXXFLAGS) -fmodule-file=a.pcm -c main.cpp -o main.o                             
+	$(CXX) $(CXXFLAGS) -c a.pcm -o a.o                             
+	$(CXX) $(CXXFLAGS) -fmodule-file=a.pcm a.o foo.o main.o -o test 
 
 clean:
 	-rm -f *.o *.pcm test
