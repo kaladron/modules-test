@@ -1,9 +1,10 @@
 .SUFFIXES: .cppm .pcm .cpp
 .PHONY: all
 
-CXXFLAGS := -std=c++2a -stdlib=libc++ -fmodules
+CPPFLAGS := -std=c++2a -fmodules
+CXXFLAGS := $(CPPFLAGS) -stdlib=libc++
 
-OBJS := foo.o main.o a.o
+OBJS := foo.o bar.o main.o a.o
 
 all: test
 
@@ -11,7 +12,7 @@ all: test
 	$(CXX) $(CXXFLAGS) --precompile $< -o $@
 
 .pcm.o:
-	$(CXX) $(CXXFLAGS) -Wno-unused-command-line-argument -c $< -o $@
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 # Cancel the built-in
 %.o: %.cpp
